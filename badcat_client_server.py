@@ -1,11 +1,23 @@
 # run both servers than run event_handler.py
 
-
+import os
+ROOT_DIR = os.path.abspath(os.curdir)
+MOJ_DIR = ROOT_DIR+'\miksa.Log'
 import requests
 import pprint
 import random
 from flask import Flask, request, jsonify  # server stuff
 pp = pprint.PrettyPrinter(indent=4)
+
+import logging
+
+LOG_FORMAT = '%(levelname)s %(asctime)s - %(message)s'
+logging.basicConfig(filename=MOJ_DIR,
+                    level=logging.DEBUG,
+                    format=LOG_FORMAT,
+                    filemode='w')
+logger = logging.getLogger()
+logger.info('test msg')
 
 
 defaultarmy = {
@@ -338,6 +350,10 @@ def attack_server(url, who='random', webhooknapadaca=''):
         msg = 'Sredjeni Log: Kicked by DEATH [attackserver] - ' \
               'stigao mi je [defenderPostStatus="Mrtav"], log kickovanog je:'
         print(msg)
+        superlog = sredi_log_klijenta(mrtvi_defender)
+        logger.info(str(superlog))
+        for key in superlog:
+            logger.info(str(key) + '-' + str(superlog[key]))
         pp.pprint(sredi_log_klijenta(mrtvi_defender))
         lista_klijenata.remove(mrtvi_defender)
 
@@ -431,6 +447,7 @@ def clientwebhook(webhook):
     #####################
     if 'sudo' in ucitani_json and ucitani_json['sudo'] == 'attack':
         if not daj_klijenta_po_webhooku(webhook):
+
             return error_json('Attack poslat na webhook:[{}], a ovaj like je vec kickovan iz baze'.format(webhook)), 404
 
         if daj_status_po_klijent_webhooku(webhook) == 400:

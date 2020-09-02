@@ -288,13 +288,13 @@ if __name__ == '__main__':
     ##############################
     #  -- FAJT --- 10 loopova (ili koliko god) da klijenti napadaju. (salje i na webhokove vec izbacenih ljudi)
     ##############################
-    for i in range(10):
+    for i in range(20):
         print('loop {}'.format(i))
         for client in lista_klijent_objectova:
             time.sleep(random.randint(0, 100)/200)  # delays execution by rand 0to2 seconds
 
             # attack som1 on server
-            response = client.sudo_attack(urlsudoattack, who='weakest')  # who='random' / who='strongest'
+            response = client.sudo_attack(urlsudoattack, who='random')  # who='random' / who='strongest'
             # client.add_log(response.json())
             print('status odgovora')
             print(response.status_code)
